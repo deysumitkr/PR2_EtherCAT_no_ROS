@@ -36,6 +36,17 @@ class DubinsPath():
         self.posSamples_stamped += [ [self.timestamp[-1]] + self.posSamples[-1] ]
         self.velSamples_stamped += [ [self.timestamp[-1]] + self.velSamples[-1] ]
 
+    def maintainStatus(self, samples):
+        # state = self.posSamples[-1]
+        vstate = self.velSamples[-1]
+        for n in range(samples):
+            self.timestamp.append(self.timestamp[-1]+self.dt)
+            self.velSamples.append(vstate)
+            pos = list(self.posSamples[-1] + np.array(vstate) * self.dt)
+            self.posSamples.append(pos)
+            self.addTimeStampedData()
+            
+            
 
     # length = length of the straight line
     # velocity = velocity along the path
