@@ -1,6 +1,11 @@
 
 # Created by https://www.gitignore.io/api/vim,emacs,linux,macos,matlab,python,pycharm,windows,notepadpp,jetbrains,visualstudiocode
 
+# Manual additions
+*.m
+*.csv
+*.gpg
+
 ### Emacs ###
 # -*- mode: gitignore; -*-
 *~
