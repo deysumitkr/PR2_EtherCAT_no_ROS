@@ -437,5 +437,8 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Manual exclusions
+!eml/*
+!eml/lib/*
 
 # End of https://www.gitignore.io/api/vim,emacs,linux,macos,matlab,python,pycharm,windows,notepadpp,jetbrains,visualstudiocode
