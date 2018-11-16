@@ -24,13 +24,26 @@ void * realTimeLoop(void *){
 
     pthread_mutex_lock(&rt_loop_mutex);
 
+    gettimeofday(&now, NULL);
+    timer_interrupt.tv_sec = now.tv_sec;
+    timer_interrupt.tv_nsec = (now.tv_usec + RT_LOOP_WAIT_TIME) * 1000;
+
     while(__RUN_THREADS__) {
         gettimeofday(&now, NULL);
+        /*
+        // check for failure of hard real-time contraint
+        if (now.tv_sec + (now.tv_usec * 1000) > timer_interrupt.tv_sec + timer_interrupt.tv_nsec) {
+            // hard real-time constrained failed: last loop took longer than desired
+        }
+        */
+
+        pthread_cond_timedwait(&rt_loop_cond, &rt_loop_mutex, &timer_interrupt);
+        
+        // set interrupt time for the next loop
         timer_interrupt.tv_sec = now.tv_sec;
         timer_interrupt.tv_nsec = (now.tv_usec + RT_LOOP_WAIT_TIME) * 1000;
-        
-        pthread_cond_timedwait(&rt_loop_cond, &rt_loop_mutex, &timer_interrupt);
-        kul::update();
+
+        kul::update(); // controller update call
     }
 
     pthread_mutex_unlock(&rt_loop_mutex);
